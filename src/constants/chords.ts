@@ -18,6 +18,10 @@ export const CHORDS: Chord[] = [
     notes: [0, 3, 7, 10],
   },
   {
+    key: 'M7',
+    notes: [0, 4, 7, 11],
+  },
+  {
     key: 'aug',
     notes: [0, 4, 8],
   },

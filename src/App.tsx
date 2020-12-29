@@ -12,7 +12,7 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${COLORS.darkPurple};
   padding: 20px 0;
 `
