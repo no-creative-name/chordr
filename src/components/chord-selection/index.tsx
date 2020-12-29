@@ -1,26 +1,25 @@
 import styled from "styled-components"
 import { CHORDS, COLORS } from "../../constants"
-import { getObjectKeys } from "../../helpers/get-object-keys"
 
 interface ChordSelectionProps {
   isDisabled: boolean;
-  selectedChordKey: keyof typeof CHORDS | undefined;
-  onChordSelect(chordKey: keyof typeof CHORDS): void;
+  selectedChordKey: string | undefined;
+  onChordSelect(chordKey: string): void;
 }
 
 const ChordButtonContainer = styled.div`
   display: grid;
-  grid-template-columns: 33% 33% 33%;
-  gap: 10px;
-  margin-top: 20px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 15px;
 `
 
 const ChordButton = styled.button<{ isActive: boolean }>`
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background-color: ${(props) => props.isActive ? COLORS.coolGrey : 'white'};
   border: unset;
   font-weight: 600;
+  cursor: pointer;
 `
 
 export const ChordSelection: React.FC<ChordSelectionProps> = ({
@@ -31,11 +30,11 @@ export const ChordSelection: React.FC<ChordSelectionProps> = ({
   return (
     <ChordButtonContainer>
       {
-        getObjectKeys(CHORDS).map(chordKey =>
+        CHORDS.map(chord =>
           <ChordButton
             disabled={isDisabled}
-            onClick={() => onChordSelect(chordKey)}
-            isActive={chordKey === selectedChordKey}>{chordKey}</ChordButton>)
+            onClick={() => onChordSelect(chord.key)}
+            isActive={chord.key === selectedChordKey}>{chord.key}</ChordButton>)
       }
     </ChordButtonContainer>
   )

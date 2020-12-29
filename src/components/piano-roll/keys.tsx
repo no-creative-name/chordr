@@ -22,8 +22,10 @@ const getKeyColor = (isEbony: boolean, isActive: boolean, isRoot: boolean) => {
 export const IvoryKey = styled.div<StyledKeyProps>`
   width: 16vw;
   height: 100%;
+  transition: background-color 0.1s;
   background-color: ${props => getKeyColor(false, props.isActive, props.isRoot)};
   flex-shrink: 0;
+  cursor: pointer;
 
   &:not(:last-child) {
     border-right: 1px solid black;
@@ -37,10 +39,12 @@ export const IvoryKey = styled.div<StyledKeyProps>`
 export const EbonyKey = styled.div<StyledKeyProps>`
   width: 12vw;
   height: 60%;
+  transition: background-color 0.1s;
   background-color: ${props => getKeyColor(true, props.isActive, props.isRoot)};
   margin-left: -6vw;
   z-index: 2;
   flex-shrink: 0;
+  cursor: pointer;
 
   + ${IvoryKey} {
     margin-left: -6vw;

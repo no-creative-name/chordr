@@ -1,9 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { ChordSelection } from "./components/chord-selection";
+import { InversionSelection } from "./components/inversion-selection";
 import { PianoRoll } from "./components/piano-roll"
-import { BREAKPOINTS, CHORDS, COLORS } from "./constants";
+import { BREAKPOINTS, COLORS, getChordNotesForKey } from "./constants";
 import { getChordName } from "./helpers/get-chord-name";
+import { invertChord } from "./helpers/invert-chord";
 
 const Background = styled.div`
   display: flex;
@@ -12,6 +14,10 @@ const Background = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: ${COLORS.darkPurple};
+`
+
+const Heading = styled.h1`
+  color: white;
 `
 
 const ChordDisplay = styled.p`
@@ -23,38 +29,69 @@ const ChordDisplay = styled.p`
   }
 `
 
-export const App: React.FC = () => {
-  const [rootNodeIdx, setRootNodeIdx] = useState<number>();
-  const [chordKey, setChordKey] = useState<keyof typeof CHORDS>();
+const ButtonArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 
-  const reset = () => {
-    setRootNodeIdx(undefined);
-    setChordKey(undefined);
+  > *:not(:first-child) {
+    margin-top: 20px; 
   }
+
+  @media (min-width: ${BREAKPOINTS.desktop}) {
+    flex-direction: row;
+
+    > *:not(:first-child) {
+      margin-left: 50px; 
+    }
+  }
+`
+
+export const App: React.FC = () => {
+  const [rootNoteIdx, setRootNoteIdx] = useState<number>();
+  const [chordKey, setChordKey] = useState<string>();
+  const [inversionIdx, setInversionIdx] = useState<number>(0);
 
   return (
     <Background>
+      <Heading>CHORDR</Heading>
       <ChordDisplay>
-        {rootNodeIdx && chordKey ? getChordName(rootNodeIdx, chordKey) : 'Please select a root note and a chord'}
+        {rootNoteIdx && chordKey ? getChordName(rootNoteIdx, chordKey) : 'Please select a root note and a chord'}
       </ChordDisplay>
       <PianoRoll
-        selectedNoteIdx={rootNodeIdx}
-        chordNotes={chordKey ? CHORDS[chordKey] : []}
+        rootIdx={rootNoteIdx}
+        chordNotes={chordKey ? invertChord(getChordNotesForKey(chordKey), inversionIdx) : []}
         onKeySelect={key => {
-          if (key === rootNodeIdx) {
-            reset()
+          setInversionIdx(0);
+          if (key === rootNoteIdx) {
+            setRootNoteIdx(undefined);
+            setChordKey(undefined);
           } else {
-            setRootNodeIdx(key);
+            setRootNoteIdx(key);
           }
         }}>
       </PianoRoll>
-      <ChordSelection
-        isDisabled={!rootNodeIdx}
-        selectedChordKey={chordKey}
-        onChordSelect={cKey => {
-          setChordKey(chordKey === cKey ? undefined : cKey);
-        }}>
-      </ChordSelection>
+      <ButtonArea>
+        <ChordSelection
+          isDisabled={!rootNoteIdx}
+          selectedChordKey={chordKey}
+          onChordSelect={cKey => {
+            setInversionIdx(0);
+            setChordKey(chordKey === cKey ? undefined : cKey);
+          }}>
+        </ChordSelection>
+        {
+          chordKey ?
+            <InversionSelection
+              numberOfInversions={getChordNotesForKey(chordKey).length}
+              selectedInversionIdx={inversionIdx}
+              onInversionSelect={iIdx => {
+                setInversionIdx(inversionIdx === iIdx ? 0 : iIdx);
+              }}>
+            </InversionSelection> : ''
+        }
+      </ButtonArea>
     </Background>
   );
 }

@@ -3,3 +3,8 @@ export interface Note {
   altName?: string;
   color: 'ebony' | 'ivory'
 }
+
+export interface Chord {
+  key: string;
+  notes: number[];
+}
