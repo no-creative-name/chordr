@@ -15,6 +15,7 @@ const PianoRollContainer = styled.div`
   overflow: scroll;
   max-width: 100%;
   height: 50vh;
+  min-height: 250px;
 `
 
 export const PianoRoll: React.FC<PianoRollProps> = ({

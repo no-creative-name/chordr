@@ -1,40 +1,25 @@
-import styled from "styled-components"
-import { COLORS } from "../../constants"
+import { Button } from "../button"
+import { ButtonContainer } from "../button-container"
 
 interface InversionSelectionProps {
   numberOfInversions: number;
-  selectedInversionIdx: number | undefined;
+  selectedInversionIdx: number | undefined;
   onInversionSelect(inversionIndex: number): void;
 }
-
-const InversionButtonContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 15px;
-`
-
-const InversionButton = styled.button<{ isActive: boolean }>`
-width: 80px;
-height: 80px;
-  background-color: ${(props) => props.isActive ? COLORS.coolGrey : 'white'};
-  border: unset;
-  font-weight: 600;
-  cursor: pointer;
-`
 
 export const InversionSelection: React.FC<InversionSelectionProps> = ({
   numberOfInversions,
   selectedInversionIdx,
   onInversionSelect,
 }) => {
-  return <InversionButtonContainer>
+  return <ButtonContainer>
     {
-      Array.from(Array(numberOfInversions)).map((_, index) => <InversionButton
+      Array.from(Array(numberOfInversions)).map((_, index) => <Button
         isActive={selectedInversionIdx === index}
         onClick={() => onInversionSelect(index)}
       >
         {index}
-      </InversionButton>)
+      </Button>)
     }
-  </InversionButtonContainer>
+  </ButtonContainer>
 }

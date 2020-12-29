@@ -14,13 +14,19 @@ const Background = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: ${COLORS.darkPurple};
+  padding: 20px 0;
 `
 
-const Heading = styled.h1`
+const Headline1 = styled.h1`
+  color: white;
+`
+
+const Headline2 = styled.h2`
   color: white;
 `
 
 const ChordDisplay = styled.p`
+  margin: 0 0 20px 0;
   font-size: 20px;
   color: white;
 
@@ -32,12 +38,7 @@ const ChordDisplay = styled.p`
 const ButtonArea = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-top: 20px;
-
-  > *:not(:first-child) {
-    margin-top: 20px; 
-  }
 
   @media (min-width: ${BREAKPOINTS.desktop}) {
     flex-direction: row;
@@ -55,9 +56,9 @@ export const App: React.FC = () => {
 
   return (
     <Background>
-      <Heading>CHORDR</Heading>
+      <Headline1>CHORDR</Headline1>
       <ChordDisplay>
-        {rootNoteIdx && chordKey ? getChordName(rootNoteIdx, chordKey) : 'Please select a root note and a chord'}
+        {rootNoteIdx && chordKey ? getChordName(rootNoteIdx, chordKey) : 'Pick a root note and a chord'}
       </ChordDisplay>
       <PianoRoll
         rootIdx={rootNoteIdx}
@@ -72,7 +73,8 @@ export const App: React.FC = () => {
           }
         }}>
       </PianoRoll>
-      <ButtonArea>
+      <ButtonArea> <div>
+        <Headline2>Chord</Headline2>
         <ChordSelection
           isDisabled={!rootNoteIdx}
           selectedChordKey={chordKey}
@@ -81,15 +83,20 @@ export const App: React.FC = () => {
             setChordKey(chordKey === cKey ? undefined : cKey);
           }}>
         </ChordSelection>
+      </div>
         {
-          chordKey ?
-            <InversionSelection
-              numberOfInversions={getChordNotesForKey(chordKey).length}
-              selectedInversionIdx={inversionIdx}
-              onInversionSelect={iIdx => {
-                setInversionIdx(inversionIdx === iIdx ? 0 : iIdx);
-              }}>
-            </InversionSelection> : ''
+          chordKey
+            ? <div>
+              <Headline2>Inversion</Headline2>
+              <InversionSelection
+                numberOfInversions={getChordNotesForKey(chordKey).length}
+                selectedInversionIdx={inversionIdx}
+                onInversionSelect={iIdx => {
+                  setInversionIdx(inversionIdx === iIdx ? 0 : iIdx);
+                }}>
+              </InversionSelection>
+            </div>
+            : ''
         }
       </ButtonArea>
     </Background>
