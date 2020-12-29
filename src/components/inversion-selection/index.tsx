@@ -14,8 +14,8 @@ const InversionButtonContainer = styled.div`
 `
 
 const InversionButton = styled.button<{ isActive: boolean }>`
-  width: 100px;
-  height: 100px;
+width: 80px;
+height: 80px;
   background-color: ${(props) => props.isActive ? COLORS.coolGrey : 'white'};
   border: unset;
   font-weight: 600;
